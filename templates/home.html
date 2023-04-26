@@ -1,0 +1,35 @@
+{% extends 'bootstrap/base.html' %}
+
+{% block styles %}
+{{ super() }}
+	<link rel="stylesheet" href="{{ url_for('static', filename='/styles.css') }}">
+{% endblock %}
+
+{% block title %}Amazon Price Tracker{% endblock %}
+
+{% block content %}
+
+  {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-success">{{ message }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+        {% endfor %}
+      {% endif %}
+  {% endwith %}
+
+<div class="jumbotron text-center">
+    <div class="container">
+      <h1 class="display-4">Amazon Price Checker</h1>
+      <p class="lead">Tired of checking Amazon prices every day to see if it is on sale?</p>
+      <hr class="my-4">
+      <p>You've found the right place! Add the product you want tracked and get notified if it ever goes to or below your target price!</p>
+      <a class="btn btn-warning btn-lg register-button" href="{{ url_for('register') }}" role="button">Register</a>
+      <a class="btn btn-warning btn-lg login-button" href="{{ url_for('login') }}" role="button">Login</a>
+    </div>
+</div>
+
+{% endblock %}

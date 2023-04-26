@@ -1,0 +1,145 @@
+{% extends 'bootstrap/base.html' %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block styles %}
+{{ super() }}
+	<link rel="stylesheet" href="{{ url_for('static', filename='/styles.css') }}">
+{% endblock %}
+
+{% block title %}Products Being Tracked{% endblock %}
+
+{% block content %}
+
+  {% with messages = get_flashed_messages(with_categories=True) %}
+      {% if messages %}
+        {% for category, message in messages %}
+            <div class="alert alert-{{ category }}">{{ message }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+        {% endfor %}
+      {% endif %}
+  {% endwith %}
+
+<div class="container">
+  <div class="row">
+    <div class="col-sm-12">
+      <h1>Products Being Tracked</h1>
+
+      {% if products|length == 0: %}
+        <p>No products being tracked. Add a product by pressing the button below.</p>
+      {% else: %}
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Product Name</th>
+              <th>Product Link</th>
+              <th>Buy Price</th>
+              <th>Current Price</th>
+              <th><a class="btn btn-primary check-all-button" href="#" role="button">Check All</a></th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for product in products %}
+            <tr>
+              <td>{{ product.product_name }}</td>
+              <td><a href="{{ product.product_link }}">Product Link</a></td>
+              <td>{{ "$%.2f"|format(product.buy_price) }}</td>
+              <td class="current-price" id="current_price_{{ product.id }}">
+                {% if product.current_price == None: %}
+                  Check Price</td>
+                {% else: %}
+                  ${{ product.current_price }}</td>
+                {% endif %}
+              <td><a class="btn btn-primary check-price-button" href="{{ url_for('check_price', product_id=product.id) }}" data-product-id="{{ product.id }}" role="button">Check Price</a></td>
+              <td>
+                <form id="delete-form-{{ product.id }}" method="POST" action="{{ url_for('delete_product', product_id=product.id) }}"></form>
+                <a class="btn btn-danger delete-button" href="{{ url_for('delete_product', product_id=product.id) }}" data-product-id="{{ product.id }}" role="button">Delete</a>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      {% endif %}
+
+      <p><a class="btn btn-primary" href="{{ url_for('add_product') }}" role="button">Add Product</a></p>
+      <p><a class="btn btn-warning" href="{{ url_for('logout') }}" role="button">Log Out</a></p>
+
+    </div>
+  </div>
+</div>
+
+{% block scripts %}
+  {{ super() }}
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+    $(document).ready(function() {
+      // Add a click event listener to the "Check Price" button
+      $('table').on('click', '.check-price-button', function(e) {
+        e.preventDefault();
+        var product_id = $(this).data('product-id');
+
+        // Make an AJAX request to the server to get the current price
+        $.ajax({
+          type: 'GET',
+          url: '/check_price/' + product_id,
+            beforeSend: function() {
+              // Display a "Checking price..." message or spinner
+              $('#current_price_' + product_id).text('Checking price...');
+           },
+          success: function(data) {
+            // Get the current price from the returned JSON object
+            var current_price = data.current_price;
+
+            // Format the current price to 2 decimal places
+            current_price = "$" + current_price.toFixed(2);
+
+            // Update the text of the current price span with the current price
+            $('#current_price_' + product_id).text(current_price);
+          }
+        });
+      });
+    });
+</script>
+<!--Check all the products-->
+  <script>
+$('.check-all-button').on('click', function(e) {
+  e.preventDefault();
+
+  var check_price_buttons = $('table:visible .check-price-button');
+  var delay = 7000;
+
+  function checkPrice(index) {
+    var button = check_price_buttons.eq(index);
+
+    button.trigger('click');
+
+    if (index < check_price_buttons.length - 1) {
+      setTimeout(function() {
+        checkPrice(index + 1);
+      }, delay);
+    } else {
+      setTimeout(function() {
+        location.reload();
+      }, delay);
+    }
+  }
+
+  checkPrice(0);
+});
+  </script>
+
+<!--When delete button is clicked, row is deleted.-->
+<script>
+  $('table').on('click', '.delete-button', function(e) {
+  e.preventDefault();
+  var product_id = $(this).data('product-id');
+  $('#delete-form-' + product_id).submit();
+});
+</script>
+
+{% endblock %}
+
+{% endblock %}

@@ -1,0 +1,36 @@
+{% extends 'bootstrap/base.html' %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block styles %}
+{{ super() }}
+	<link rel="stylesheet" href="{{ url_for('static', filename='/styles.css') }}">
+{% endblock %}
+
+{% block title %}Register{% endblock %}
+
+{% block content %}
+
+  {% with messages = get_flashed_messages(with_categories=True) %}
+      {% if messages %}
+        {% for category, message in messages %}
+            <div class="alert alert-{{ category }}" role="alert">
+                {{ message }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+        {% endfor %}
+      {% endif %}
+  {% endwith %}
+
+<div class="container">
+  <div class="row">
+    <div class="form-container form-container-lg">
+        <div class="form-header"><h1>Register</h1></div>
+        <div class="form-body">{{ wtf.quick_form(form, novalidate=True) }}</div>
+        <div class="form-button"><a class="btn btn-warning btn-md" href="{{ url_for('login') }}" role="button">Already have an account? Log In</a></div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
