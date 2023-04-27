@@ -24,11 +24,14 @@
 <div class="jumbotron text-center">
     <div class="container">
       <h1 class="display-4">Amazon Price Checker</h1>
-      <p class="lead">Tired of checking Amazon prices every day to see if it is on sale?</p>
+      <p class="lead">Tired of checking Amazon prices of several products to see if it is on sale?</p>
       <hr class="my-4">
-      <p>You've found the right place! Add the product you want tracked and get notified if it ever goes to or below your target price!</p>
+      <p>You've found the right place! Add the products you want checked and get notified if it is at or below your target price!</p>
       <a class="btn btn-warning btn-lg register-button" href="{{ url_for('register') }}" role="button">Register</a>
       <a class="btn btn-warning btn-lg login-button" href="{{ url_for('login') }}" role="button">Login</a>
+        <br>
+        <br>
+      <a class="btn btn-primary btn-md demo-button" href="{{ url_for('demo_login') }}" role="button">Demo Login</a>
     </div>
 </div>
 

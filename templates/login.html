@@ -28,6 +28,7 @@
             <div class="form-header"><h1>Login</h1></div>
             <div class="form-body">{{ wtf.quick_form(form, novalidate=True) }}</div>
             <div class="form-button"><a class="btn btn-warning btn-md" href="{{ url_for('register') }}" role="button">Don't have an account? Sign Up!</a></div>
+            <div class="form-button"><a class="btn btn-primary btn-md" href="{{ url_for('demo_login') }}" role="button">Demo Login</a></div>
         </div>
     </div>
 </div>

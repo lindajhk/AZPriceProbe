@@ -112,6 +112,19 @@ def login():
     return render_template("login.html", form=form)
 
 
+@app.route("/demo_login", methods=["GET", "POST"])
+def demo_login():
+    demo_email = 'thisisjustadummy@email.com'
+    user = User.query.filter_by(email=demo_email).first()
+    if user is not None:
+        login_user(user)
+        flash('Logged in as demo user', 'success')
+        return redirect(url_for('products'))
+    else:
+        flash('Demo user not found', 'error')
+        return redirect(url_for('login'))
+
+
 @app.route('/logout')
 def logout():
     logout_user()
