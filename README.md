@@ -16,6 +16,7 @@ To demo the app, press demo login and you will log into the demo login.
 
 Once logged in, you can see all the products that you are tracking. To add a product, click the Add Product button and fill out the product information.
 ![image](https://github.com/lindajhk/AZPriceProbe/assets/106854298/9df8fd55-76c1-42c1-822b-5c7957c1baaf)
+
 ![image](https://github.com/lindajhk/AZPriceProbe/assets/106854298/e8502343-927f-46b5-babd-602a53ccaecb)
 
 Once a product is added, you will see that the product page is updated with the new product. You can delete any products on your list and check the price. 
