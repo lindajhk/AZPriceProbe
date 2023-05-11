@@ -211,7 +211,7 @@ def check_price(product_id):
                     connection.sendmail(
                         from_addr=my_email,
                         to_addrs=current_user.email,
-                        msg=f"Subject:Amazon Price Alert!\n\n{message}\n\nBuy now below!\n{product_link}"
+                        msg=f"Subject:AZPriceProbe Amazon Price Alert!\n\n{message}\n\nBuy now below!\n{product_link}"
                     )
                 product.last_alert_sent = datetime.strptime(now.strftime('%m-%d-%y %H:%M:%S'), '%m-%d-%y %H:%M:%S')
                 db.session.commit()
